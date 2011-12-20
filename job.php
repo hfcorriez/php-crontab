@@ -8,13 +8,13 @@
  */
 error_reporting(E_ALL & ~E_NOTICE);
 define('CRONJOB_START_TIME', time());
-define('CRONJOB_START_MEMORY', memory_get_usage());
+define('CRONJOB_START_MEMORY', memory_get_usage(1));
 define('CRONJOB_DIR', dirname(__FILE__));
 require CRONJOB_DIR . '/inc/lib.php';
 
 while (true)
 {
-    write_log('Memory: ' . (memory_get_usage() - CRONJOB_START_MEMORY), 'memory');
+    write_log('Memory: ' . (memory_get_usage(1) - CRONJOB_START_MEMORY), 'memory');
     
     // update or get files
 	clearstatcache();
