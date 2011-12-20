@@ -1,0 +1,3 @@
+# check time
+*/2 * * * * * php -r "echo time();"
+* * * * * * php -r "echo time();"
