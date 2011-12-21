@@ -24,6 +24,6 @@ else
     $stdout = $stderr = null;
     $status = shell($command, $stdout, $stderr);
     
-    write_log("<{$status}> <{$command}>" . ($stdout ? ' stdout: ' . $stdout : '') . ($stderr ? ' stderr: ' . $stderr : ''), 'run');
+    write_log("<{$status}> <{$command}>" . ($stdout ? ' stdout: ' . $stdout : '') . ($stderr ? ' stderr: ' . $stderr : ''), 'work');
 }
 exit;

@@ -10,6 +10,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 define('CRONJOB_START_TIME', time());
 define('CRONJOB_START_MEMORY', memory_get_usage(1));
 define('CRONJOB_DIR', dirname(__FILE__));
+define('CRONJOB_USER', get_current_user());
 require CRONJOB_DIR . '/inc/lib.php';
 
 while (true)
@@ -193,6 +194,7 @@ while (true)
 	foreach ($command_hits as $key => $command)
 	{
 	    $command_hits[$key] = '"' . str_replace('"', '\\"', $command) . '"';
+	    write_log("<" . CRONJOB_USER . "> <{$command}>", 'job');
 	}
 	
 	pipe_shell(config('php_runtime') . ' ' . CRONJOB_DIR . '/work.php ' . join(' ', $command_hits));
