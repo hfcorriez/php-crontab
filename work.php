@@ -18,12 +18,16 @@ if ($argc > 2)
         pipe_shell(config('php_runtime') . ' ' . __FILE__ . ' "' . str_replace('"', '\\"', $command) . '"');
     }
 }
-else
+elseif ($argc > 1)
 {
     $command = $argv[1];
     $stdout = $stderr = null;
     $status = shell($command, $stdout, $stderr);
     
     write_log("<{$status}> <{$command}>" . ($stdout ? ' stdout: ' . $stdout : '') . ($stderr ? ' stderr: ' . $stderr : ''), 'work');
+}
+else
+{
+    write_log("<0> <empty>", 'work');
 }
 exit;
