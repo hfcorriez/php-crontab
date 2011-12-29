@@ -13,6 +13,17 @@ define('CRONJOB_DIR', dirname(__FILE__));
 define('CRONJOB_USER', get_current_user());
 require CRONJOB_DIR . '/inc/lib.php';
 
+//Pulse trigger
+if((int)shell_exec('ps -ef | grep "job.php" | grep -v grep | wc -l') > 1)
+{
+    write_log('pulse trigger checked ok.', 'run');
+    exit;
+}
+else
+{
+    write_log('job start.', 'run');
+}
+
 $index_map = array('s', 'i', 'H', 'w', 'd', 'm');
 
 while (true)
