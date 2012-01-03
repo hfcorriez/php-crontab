@@ -1,2 +1,6 @@
-
-.idea/
+.buildpath
+.project
+.settings/
+*.log
+*.out
+tasks

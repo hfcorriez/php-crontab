@@ -10,7 +10,21 @@ error_reporting(E_ALL & ~E_NOTICE);
 define('CRONJOB_START_TIME', time());
 define('CRONJOB_START_MEMORY', memory_get_usage(1));
 define('CRONJOB_DIR', dirname(__FILE__));
+define('CRONJOB_USER', get_current_user());
 require CRONJOB_DIR . '/inc/lib.php';
+
+//Pulse trigger
+if((int)shell_exec('ps -ef | grep "job.php" | grep -v grep | wc -l') > 1)
+{
+    write_log('pulse trigger checked ok.', 'run');
+    exit;
+}
+else
+{
+    write_log('job start.', 'run');
+}
+
+$index_map = array('s', 'i', 'H', 'w', 'd', 'm');
 
 while (true)
 {
@@ -36,7 +50,7 @@ while (true)
 		}
 		
 		// check format
-		if (!preg_match('/^((\*|\d+|\d+\-\d+)(\/\d+)? ){6}(.*)$/', $task, $match))
+		if (!preg_match('/^((\*|\d+|\d+\-\d+|[\d,]+)(\/\d+)? ){6}(.*)$/', $task, $match))
 		{
 			write_log('Error: format ' . $task);
 		}
@@ -68,14 +82,30 @@ while (true)
 				if(!is_time_range($index, $min) || !is_time_range($index, $max) || $max <= $min)
 				{
 				    write_log('Error: time pre range ' . $task);
-				    break;
+			        continue 2;
 				}
+				$time_current = date($index_map[$index]);
 				// check range
-				if (date('s') >= $min && date('s') <= $max)
+				if ($time_current >= $min && $time_current <= $max)
 				{
 					$is_time_pre = true;
 				}
-				unset($min, $max);
+				unset($time_current, $min, $max);
+			}
+			elseif (strpos($time_pre, ',') !== false)
+			{
+			    $time_points = explode(',', $time_pre);
+			    $time_current = date($index_map[$index]);
+			    if(array_search($time_current, $time_points) !== false)
+			    {
+			        $is_time_pre = true;
+			    }
+				unset($time_current, $time_points);
+			}
+			else
+			{
+			    write_log('Error: time pre is wrong with->' . $task);
+			    continue 2;
 			}
 			
 			// not exist sub time.
@@ -193,9 +223,10 @@ while (true)
 	foreach ($command_hits as $key => $command)
 	{
 	    $command_hits[$key] = '"' . str_replace('"', '\\"', $command) . '"';
+	    write_log("<" . CRONJOB_USER . "> <{$command}>", 'job');
 	}
 	
-	pipe_shell(config('php_runtime') . ' ' . CRONJOB_DIR . '/work.php ' . join(' ', $command_hits));
+	if($command_hits) pipe_shell(config('php_runtime') . ' ' . CRONJOB_DIR . '/work.php ' . join(' ', $command_hits));
 		
 	// check sleep time and do sleep
 	$sleep_time = 1000000 - floor(microtime(true)*1000000) + $microtime;
