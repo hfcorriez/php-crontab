@@ -32,8 +32,15 @@ while (true)
     
     // update or get files
 	clearstatcache();
-	$tasks = file(config('task_file'));
-	
+    if(file_exists(config('task_file')))
+    {
+	    $tasks = file(config('task_file'));
+    }
+    else
+    {
+        $tasks = array();
+    }
+
 	// record current time
 	$time = time();
 	$microtime = floor(microtime(true) * 1000000);
