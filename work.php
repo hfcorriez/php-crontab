@@ -6,7 +6,7 @@
  * @todo	超时机制
  */
 define('CRONJOB_DIR', dirname(__FILE__));
-require CRONJOB_DIR . '/inc/lib.php';
+require CRONJOB_DIR . '/cronlib.php';
 
 //$tasks = json_decode($argv);
 // arrange job

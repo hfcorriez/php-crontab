@@ -11,7 +11,7 @@ define('CRONJOB_START_TIME', time());
 define('CRONJOB_START_MEMORY', memory_get_usage(1));
 define('CRONJOB_DIR', dirname(__FILE__));
 define('CRONJOB_USER', get_current_user());
-require CRONJOB_DIR . '/inc/lib.php';
+require CRONJOB_DIR . '/cronlib.php';
 
 //Pulse trigger
 if((int)shell_exec('ps -ef | grep "job.php" | grep -v grep | wc -l') > 1)
