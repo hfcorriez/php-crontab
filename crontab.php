@@ -1,10 +1,11 @@
 <?php
 /**
- * CRONTAB主进程文件
+ * CRONTAB
  * 
  * @author	hfcorriez@gmail.com
- * @todo	crontab检查进程和重启
+ * @todo	crontab重启
  * @todo	制作linux启动脚本
+ * @todo	多用户
  */
 if (PHP_SAPI !== 'cli') exit('CronTab only run under cli mode.');
 
