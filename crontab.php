@@ -53,8 +53,6 @@ require 'cronlib.php';
 // Job run
 while (true)
 {
-    write_log('Memory: ' . (memory_get_usage() - CRONTAB_START_MEMORY), 'memory');
-
     // update or get files
     clearstatcache();
     if (file_exists(config('task_file')))

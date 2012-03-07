@@ -1,0 +1,4 @@
+task_file = tasks
+log_error = 1
+log_error_file = logs/%s.log
+php_runtime = php
