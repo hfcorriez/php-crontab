@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Parse line
+ *
+ * @param $line
+ * @return array|bool
+ */
 function crontab_parse_line($line)
 {
     $line = trim($line);
@@ -184,6 +189,13 @@ function crontab_is_valid($rule, $start_time, $time = false)
     return false;
 }
 
+/**
+ * Check Range
+ *
+ * @param $index
+ * @param $time
+ * @return bool
+ */
 function crontab_check_range($index, $time)
 {
     switch ($index)
