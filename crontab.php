@@ -15,6 +15,9 @@ define('CRONTAB_START_TIME', time());
 define('CRONTAB_START_MEMORY', memory_get_usage());
 define('CRONTAB_USER', get_current_user());
 
+// Change current work dir
+chdir(CRONTAB_DIR);
+
 // Work mode
 if ($argc > 1)
 {
