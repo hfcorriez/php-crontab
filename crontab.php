@@ -23,12 +23,13 @@ if ($argc > 1)
         unset($argv[0]);
         foreach ($argv as $command)
         {
-            pipe_shell(config('php_runtime') . ' ' . __FILE__ . ' "' . str_replace('"', '\\"', $command) . '"');
+            pipe_shell(config('php_runtime') . ' ' . __FILE__ . ' ' . $command);
         }
         exit;
     }
 
-    $command = $argv[1];
+    $command = base64_decode($argv[1]);
+    if (!$command) write_log('<0> <Invalid command!>', 'work');
     $stdout = $stderr = null;
     $status = shell($command, $stdout, $stderr);
 
@@ -86,7 +87,7 @@ while (true)
 
     foreach ($command_hits as $key => $command)
     {
-        $command_hits[$key] = '"' . str_replace('"', '\\"', $command) . '"';
+        $command_hits[$key] = base64_encode($command);
         write_log("<" . CRONTAB_USER . "> <{$command}>", 'job');
     }
 
