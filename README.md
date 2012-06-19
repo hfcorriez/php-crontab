@@ -7,7 +7,7 @@
 
 基于PHP实现的CRONTAB，可以精确到秒级的执行过程，完全兼容Linux系统的crontab写法。
 
-About Crontab [crontab.org](http://crontab.org/)
+About Crontab... [crontab.org](http://crontab.org/)
 
 ## Install
 
