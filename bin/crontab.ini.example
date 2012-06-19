@@ -1,0 +1,18 @@
+[crontab]
+crontab.mode = file
+
+[file]
+file.path = tasks
+
+[database]
+database.dsn = mysql:host=localhost;port=3306;dbname=youdbname;charset=UTF8
+database.username = username
+database.password = password
+database.table = php_crontab
+
+[log]
+log.path = /var/log/crontab.log
+log.enable = 1
+
+[php]
+php.runtime = php
