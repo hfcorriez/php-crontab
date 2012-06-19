@@ -1,6 +1,7 @@
 ## Changelog
 
 `0.1` 实现crontab基本功能，实现秒级控制，记录日志和内存占用
+
 `0.2` 按照PSR重构，支持File和Database的Adapter模式
 
 ## About
