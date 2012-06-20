@@ -28,7 +28,7 @@ About Crontab... [crontab.org](http://crontab.org/)
 复制配置
 ____
 
-    mv bin/crontab.ini.example bin/crontab.ini
+    cp bin/crontab.ini.example bin/crontab.ini
 
 修改配置
 ____
@@ -55,5 +55,5 @@ bin/crontab.ini:
 运行例子
 ____
 
-    mv tasks.example tasks
+    cp bin/tasks.example bin/tasks
     ./bin/crontab --master
