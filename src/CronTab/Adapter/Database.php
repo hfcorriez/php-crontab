@@ -20,16 +20,16 @@ class Database extends \CronTab\Adapter
     public function getTasks()
     {
         $field = $this->config['field'];
-        $tasks = $this->pdo->query("SELECT $field FROM {$this->config['table']}");
-        foreach ($tasks as $key => $task) {
-            $task = trim($task[$field]);
+        $tasks = array();
+        $results = $this->pdo->query("SELECT $field FROM {$this->config['table']}");
+        foreach ($results as $result) {
+            $task = trim($result[$field]);
 
             if (!$parse = \CronTab\CronLib::parseLine($task)) {
                 continue;
             }
 
-            unset($tasks[$key]);
-            $tasks[$key] = array($parse[0], $parse[1]);
+            $tasks[] = array($parse[0], $parse[1]);
         }
         return $tasks;
     }

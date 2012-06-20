@@ -10,8 +10,8 @@ define('CRON_DIR', dirname(__FILE__));
 chdir(CRON_DIR);
 
 // Cli arguments init.
-$executor = $argv[0];
-unset($argv[0]);
+$executor = __FILE__;
+
 // Master trip
 $cron_master = false;
 if ($index = array_search('--master', $argv)) {
@@ -19,6 +19,7 @@ if ($index = array_search('--master', $argv)) {
     $argv = array_values($argv);
     $cron_master = true;
 }
+unset($argv[0]);
 $commands = array_values($argv);
 
 // Init cron
