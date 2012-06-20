@@ -2,21 +2,24 @@
 
 namespace CronTab\Adapter;
 
+/**
+ * File Adapter for tasks
+ */
 class File extends \CronTab\Adapter
 {
-    protected $file;
+    protected $config;
 
-    public function __construct($file)
+    public function __construct(array $config)
     {
-        $this->file = $file;
+        $this->config = $config;
     }
 
     public function getTasks()
     {
         clearstatcache();
-        if (!is_file($this->file)) throw new \Exception("Non-exist task file \"$this->file\"");
+        if (!is_file($this->config['path'])) throw new \Exception("Non-exist task file \"{$this->config['path']}\"");
 
-        $tasks = file($this->file);
+        $tasks = file($this->config['path']);
 
         foreach ($tasks as $key => $task) {
             $task = trim($task);
@@ -25,9 +28,8 @@ class File extends \CronTab\Adapter
                 continue;
             }
 
-            list($rule, $command) = $parse;
             unset($tasks[$key]);
-            $tasks[$key] = array($rule, $command);
+            $tasks[$key] = array($parse[0], $parse[1]);
         }
         return $tasks;
     }

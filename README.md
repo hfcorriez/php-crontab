@@ -1,8 +1,16 @@
 ## Changelog
 
-`0.1` 实现crontab基本功能，实现秒级控制，记录日志和内存占用
+- `0.1` 实现crontab基本功能，实现秒级控制，记录日志和内存占用
+- `0.2` 按照PSR重构，支持File和Database的Adapter模式
 
-`0.2` 按照PSR重构，支持File和Database的Adapter模式
+# Features
+
+- 语法和crontab相同
+- 精确到秒级的控制
+- 每个任务都使用独立进程
+- 支持PSR标准
+- 支持文件
+- 支持数据库
 
 ## About
 
@@ -12,9 +20,8 @@ About Crontab... [crontab.org](http://crontab.org/)
 
 ## Install
 
-    git clone git://github.com/hfcorriez/php-crontab.git   
+    git clone git://github.com/hfcorriez/php-crontab.git
     cd php-crontab
-    ./bin/crontab
 
 ## Usage
 
@@ -28,20 +35,25 @@ ____
 bin/crontab.ini:
 
     [crontab]
-    crontab.mode = file             // Crontab Adapter Path
+    crontab.mode = file
 
     [file]
-    file.path = tasks               // File Path
+    file.path = tasks
 
     [database]
-    database.dsn = mysql:host=localhost;port=3306;dbname=youdbname;charset=UTF8
+    database.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
     database.username = username
     database.password = password
     database.table = php_crontab
+    database.field = command
 
     [log]
-    log.path = /var/log/crontab.log // Log Path
+    log.path = crontab.log
     log.enable = 1
 
-    [php]
-    php.runtime = php               // PHP Runtime Path
+
+运行例子
+____
+
+    mv tasks.example tasks
+    ./bin/crontab --master

@@ -32,8 +32,8 @@ class CronLib
      * Is valid command
      *
      * @static
-     * @param $rule
-     * @param $start_time
+     * @param      $rule
+     * @param      $start_time
      * @param bool $time
      * @return bool
      */

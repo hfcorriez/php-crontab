@@ -1,8 +1,36 @@
 <?php
+
+namespace CronTab\Adapter;
+
 /**
- * Created by JetBrains PhpStorm.
- * User: hfcorriez
- * Date: 12-6-20
- * Time: 上午12:25
- * To change this template use File | Settings | File Templates.
+ * DataBase Adapter for tasks
  */
+class Database extends \CronTab\Adapter
+{
+    protected $config;
+
+    protected $pdo;
+
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+        $this->pdo = new \PDO($config['dsn'], $config['username'], $config['password']);
+    }
+
+    public function getTasks()
+    {
+        $field = $this->config['field'];
+        $tasks = $this->pdo->query("SELECT $field FROM {$this->config['table']}");
+        foreach ($tasks as $key => $task) {
+            $task = trim($task[$field]);
+
+            if (!$parse = \CronTab\CronLib::parseLine($task)) {
+                continue;
+            }
+
+            unset($tasks[$key]);
+            $tasks[$key] = array($parse[0], $parse[1]);
+        }
+        return $tasks;
+    }
+}
