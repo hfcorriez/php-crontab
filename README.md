@@ -57,4 +57,5 @@ bin/crontab.ini:
 ____
 
     cp bin/tasks.example bin/tasks
+    chmod +x bin/crontab
     ./bin/crontab --master
