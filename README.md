@@ -3,6 +3,7 @@
 - `0.1` 实现crontab基本功能，实现秒级控制，记录日志和内存占用
 - `0.2` 优化和改进，分离配置使可以单独配置文件路径，日志等
 - `0.3` 按照PSR重构，支持文件和数据库模式
+- `0.4` 支持结果上报，可以上报到数据库或者文件
 
 # Features
 
@@ -36,12 +37,19 @@ ____
 bin/crontab.ini:
 
     [crontab]
-    crontab.mode = file
+    crontab.adapter = file
+    crontab.reporter = file1
 
     [file]
+    file.mode = file
     file.path = tasks
 
+    [file1]
+    file1.mode = file
+    file1.path = report.log
+
     [database]
+    database.mode = database
     database.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
     database.username = username
     database.password = password

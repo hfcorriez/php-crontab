@@ -11,7 +11,7 @@ class Logger
         $this->config = $config;
     }
 
-    public function write($text)
+    public function log($text)
     {
         $micro_time = microtime(true);
         $datetime = date('Y-m-d H:i:s.' . substr(sprintf('%.3f', $micro_time), -3), $micro_time);
