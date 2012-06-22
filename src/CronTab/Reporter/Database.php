@@ -22,7 +22,7 @@ class Database extends \CronTab\Reporter
      */
     function report(array $report = array())
     {
-            $statement = $this->pdo->prepare("INSERT INTO {$this->config['table']}(`" . join('`,`', array_keys($report)) . "`) VALUES(" . join(',', array_fill(0, count($report), ' ? ')) . ")");
-            $statement->execute(array_values($report));
+        $statement = $this->pdo->prepare("INSERT INTO {$this->config['table']}(`" . join('`,`', array_keys($report)) . "`) VALUES(" . join(',', array_fill(0, count($report), ' ? ')) . ")");
+        $statement->execute(array_values($report));
     }
 }
