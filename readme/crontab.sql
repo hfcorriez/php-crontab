@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.20-log)
 # Database: crontab
-# Generation Time: 2012-06-22 15:11:23 +0000
+# Generation Time: 2012-06-22 16:09:38 +0000
 # ************************************************************
 
 
@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `report`;
 CREATE TABLE `report` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `command` varchar(255) NOT NULL DEFAULT '',
-  `start_time` float NOT NULL,
+  `start_time` datetime NOT NULL,
   `process_time` float NOT NULL,
   `process_memory` float NOT NULL,
   `status` tinyint(4) NOT NULL,

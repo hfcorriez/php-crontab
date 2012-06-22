@@ -75,8 +75,9 @@ ____
     chmod +x bin/crontab
     ./bin/crontab --master
 
-## Database
+## Database `需要PHP PDO支持`
 从0.4开始支持结果上报，有File和Database两种模式。
 在0.3也支持任务列表从数据库中读取
 
-    SQL可以从 `readme/crontab.sql` 导入
+    MySQL可以从 readme/crontab.sql 导入
+
