@@ -1,6 +1,6 @@
 [crontab]
 crontab.adapter = file
-crontab.reporter = file1
+crontab.reporter = database1
 
 [file]
 file.mode = file
@@ -15,8 +15,15 @@ database.mode = database
 database.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
 database.username = username
 database.password = password
-database.table = php_crontab
+database.table = command
 database.field = command
+
+[database1]
+database1.mode = database
+database1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
+database1.username = username
+database1.password = password
+database1.table = report
 
 [log]
 log.path = crontab.log

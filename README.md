@@ -56,6 +56,13 @@ bin/crontab.ini:
     database.table = php_crontab
     database.field = command
 
+    [database1]
+    database1.mode = database
+    database1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
+    database1.username = username
+    database1.password = password
+    database1.table = report
+
     [log]
     log.path = crontab.log
     log.enable = 1
@@ -67,3 +74,9 @@ ____
     cp bin/tasks.example bin/tasks
     chmod +x bin/crontab
     ./bin/crontab --master
+
+## Database
+从0.4开始支持结果上报，有File和Database两种模式。
+在0.3也支持任务列表从数据库中读取
+
+    SQL可以从 `readme/crontab.sql` 导入

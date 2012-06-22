@@ -3,7 +3,7 @@
 namespace CronTab\Adapter;
 
 /**
- * File Adapter for tasks
+ * File Adapter
  */
 class File extends \CronTab\Adapter
 {

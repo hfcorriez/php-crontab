@@ -3,7 +3,7 @@
 namespace CronTab\Reporter;
 
 /**
- * File Adapter for tasks
+ * File Reporter
  */
 class File extends \CronTab\Reporter
 {
@@ -22,6 +22,7 @@ class File extends \CronTab\Reporter
     {
         $text = '';
         foreach ($report as $k => $v) {
+            if ($k == 'start_time') $v = date('Y-m-d H:i:s.' . substr($v, strpos($v, '.') + 1, 3), $v);
             $text .= '[' . str_pad($k, 20, ' ', STR_PAD_BOTH) . '] ' . $v . PHP_EOL;
         }
         $text .= str_repeat('-', 50) . PHP_EOL;

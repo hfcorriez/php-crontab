@@ -105,7 +105,7 @@ class CronTab
         $this->getLogger()->log("({$process_time}s) ({$process_memory}k) <{$command}> <{$status}> " . ($stderr ? ' err:' . $stderr : ''));
 
         $this->getReporter()->report(array(
-            'start_time' => date('Y-m-d H:i:s.' . substr($start_time, strpos($start_time, '.') + 1, 3), $start_time),
+            'start_time' => $start_time,
             'command' => $command,
             'process_memory' => $process_memory,
             'process_time' => $process_time,
@@ -164,7 +164,7 @@ class CronTab
 
         if ($instance === null) {
             if (!$conf = $this->config['crontab']['reporter']) {
-                throw new \Exception("Unkown reporter mode: {$this->config['crontab']['mode']}.");
+                throw new \Exception("Unkown reporter mode: {$this->config['crontab']['reporter']}.");
             }
             $class = '\\' . __NAMESPACE__ . '\\Reporter\\' . ucfirst($this->config[$conf]['mode']);
             $instance = new $class($this->config[$conf]);

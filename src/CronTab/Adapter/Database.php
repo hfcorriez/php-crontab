@@ -3,7 +3,7 @@
 namespace CronTab\Adapter;
 
 /**
- * DataBase Adapter for tasks
+ * DataBase Adapter
  */
 class Database extends \CronTab\Adapter
 {
