@@ -9,12 +9,11 @@ class IniParser
     /**
      * Set file and parse ini
      *
-     * @param $file
+     * @param array $ini
+     * @internal param $file
      */
-    public function __construct($file)
+    public function __construct(array $ini)
     {
-        $ini = parse_ini_file($file);
-
         foreach ($ini as $key => $value) {
             $config = &$this->config;
             $namespaces = explode('.', $key);
@@ -26,6 +25,41 @@ class IniParser
         }
     }
 
+    /**
+     * Load
+     *
+     * @static
+     * @param array $ini
+     * @return IniParser
+     */
+    public static function load(array $ini)
+    {
+        return new self($ini);
+    }
+
+    /**
+     * Load from string
+     *
+     * @static
+     * @param $string
+     * @return IniParser
+     */
+    public static function loadFromString($string)
+    {
+        return new self(parse_ini_string($string));
+    }
+
+    /**
+     * Load from file
+     *
+     * @static
+     * @param $file
+     * @return IniParser
+     */
+    public static function loadFromFile($file)
+    {
+        return new self(parse_ini_file($file));
+    }
 
     /**
      * Get config
