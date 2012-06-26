@@ -102,7 +102,7 @@ class CronTab
         $process_time = number_format(microtime(true) - $start_time, 3);
         $process_memory = (memory_get_usage() - $start_memory) / 1000;
 
-        $this->getLogger()->log("({$process_time}s) ({$process_memory}k) <{$command}> <{$status}> " . ($stderr ? 'error!' : ''));
+        $this->getLogger()->log("<{$command}> ({$process_time}s | {$process_memory}k) [{$status}] " . ($stderr ? 'error!' : ''));
 
         $this->getReporter()->report(array(
             'start_time'     => date('Y-m-d H:i:s', $start_time),
