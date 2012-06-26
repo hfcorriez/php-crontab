@@ -25,7 +25,7 @@ $commands = array_values($argv);
 // Init cron
 require dirname(CRON_DIR) . '/src/AutoLoader.php';
 AutoLoader::register();
-$ini = new \CronTab\IniParser(CRON_DIR . '/crontab.ini');
+$ini = \CronTab\IniParser::loadFromFile(CRON_DIR . '/crontab.ini');
 $cron = new \CronTab\CronTab($ini->get(), CRON_DIR);
 $cron->registerExecutor($executor);
 
