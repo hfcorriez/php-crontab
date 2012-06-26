@@ -244,6 +244,7 @@ class CronLib
                 stream_select($read, $write = NULL, $exeptions = NULL, $timeleft, NULL);
                 $stdout .= fread($pipes[1], 2048);
             } while (!feof($pipes[1]) && $timeleft > 0);
+            fclose($pipes[1]);
 
             if($timeleft <= 0) {
                 proc_terminate($process);
@@ -252,7 +253,7 @@ class CronLib
             }
 
             while (!feof($pipes[2])) {
-                $stderr .= fgets($pipes[2], 2048);
+                $stderr .= fread($pipes[2], 2048);
             }
             fclose($pipes[2]);
 
