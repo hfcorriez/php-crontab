@@ -218,13 +218,15 @@ class CronLib
     /**
      * Run shell
      *
-     * @param $cmd
-     * @param $stdout
-     * @param $stderr
+     * @param     $cmd
+     * @param     $stdout
+     * @param     $stderr
+     * @param int $timeout
      * @return int|null
      */
-    public static function shell($cmd, &$stdout, &$stderr)
+    public static function shell($cmd, &$stdout, &$stderr, $timeout = 3600)
     {
+        if ($timeout <= 0) $timeout = 3600;
         $descriptorspec = array
         (
             1 => array("pipe", "w"),
@@ -234,14 +236,23 @@ class CronLib
         $stdout = $stderr = $status = null;
         $process = proc_open($cmd, $descriptorspec, $pipes);
 
+        $endtime = time() + $timeout;
         if (is_resource($process)) {
-            while (!feof($pipes[1])) {
-                $stdout .= fgets($pipes[1], 1024);
+            do {
+                $timeleft = $endtime - time();
+                $read = array($pipes[1]);
+                stream_select($read, $write = NULL, $exeptions = NULL, $timeleft, NULL);
+                $stdout .= fread($pipes[1], 2048);
+            } while (!feof($pipes[1]) && $timeleft > 0);
+
+            if($timeleft <= 0) {
+                proc_terminate($process);
+                $stderr = 'process terminated for timeout.';
+                return -1;
             }
-            fclose($pipes[1]);
 
             while (!feof($pipes[2])) {
-                $stderr .= fgets($pipes[2], 1024);
+                $stderr .= fgets($pipes[2], 2048);
             }
             fclose($pipes[2]);
 

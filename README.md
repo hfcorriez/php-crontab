@@ -39,6 +39,7 @@ bin/crontab.ini:
     [crontab]
     crontab.adapter = file
     crontab.reporter = file1
+    crontab.timeout = 600
 
     [file]
     file.mode = file

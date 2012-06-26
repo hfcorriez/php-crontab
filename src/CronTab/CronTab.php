@@ -97,21 +97,21 @@ class CronTab
         $start_time = microtime(true);
         $start_memory = memory_get_usage();
 
-        $status = CronLib::shell($command, $stdout, $stderr);
+        $status = CronLib::shell($command, $stdout, $stderr, (int)$this->config['crontab']['timeout']);
 
         $process_time = number_format(microtime(true) - $start_time, 3);
         $process_memory = (memory_get_usage() - $start_memory) / 1000;
 
-        $this->getLogger()->log("({$process_time}s) ({$process_memory}k) <{$command}> <{$status}> " . ($stderr ? 'error!': ''));
+        $this->getLogger()->log("({$process_time}s) ({$process_memory}k) <{$command}> <{$status}> " . ($stderr ? 'error!' : ''));
 
         $this->getReporter()->report(array(
-            'start_time' => date('Y-m-d H:i:s', $start_time),
-            'command' => $command,
+            'start_time'     => date('Y-m-d H:i:s', $start_time),
+            'command'        => $command,
             'process_memory' => $process_memory,
-            'process_time' => $process_time,
-            'status' => $status,
-            'stdout' => $stdout,
-            'stderr' => $stderr
+            'process_time'   => $process_time,
+            'status'         => $status,
+            'stdout'         => $stdout,
+            'stderr'         => $stderr
         ));
     }
 
