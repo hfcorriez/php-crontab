@@ -13,7 +13,7 @@ file1.path = report.log
 
 [database]
 database.mode = database
-database.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
+database.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF8"
 database.username = username
 database.password = password
 database.table = command
@@ -21,7 +21,7 @@ database.field = command
 
 [database1]
 database1.mode = database
-database1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF-8"
+database1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF8"
 database1.username = username
 database1.password = password
 database1.table = report
