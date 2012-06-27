@@ -50,7 +50,7 @@ class CronTab
 
             foreach ($this->tasks as $task) {
                 list($rule, $command) = $task;
-                if (CronLib::isValid($rule, $this->start_time)) {
+                if (CronLib::isValid($rule)) {
                     $command_hits[] = $command;
                 }
             }

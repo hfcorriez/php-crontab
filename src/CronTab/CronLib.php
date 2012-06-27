@@ -37,9 +37,10 @@ class CronLib
      * @param bool $time
      * @return bool
      */
-    public static function isValid($rule, $start_time, $time = false)
+    public static function isValid($rule)
     {
-        if (!$time) $time = time();
+        $time = time();
+        $start_time = strtotime('today');
         static $index_map = array('s', 'i', 'H', 'w', 'd', 'm');
         // get command and cycles
         $cycles = explode(' ', trim($rule));
