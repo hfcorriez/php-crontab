@@ -1,6 +1,6 @@
 [crontab]
 crontab.adapter = file
-crontab.reporter = database1
+crontab.reporter = file1
 crontab.timeout = 600
 
 [file]
