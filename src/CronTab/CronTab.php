@@ -37,6 +37,7 @@ class CronTab
      */
     public function start()
     {
+        $this->getLogger()->log("crontab start.");
         while (true) {
             // Load tasks every time.
             $this->tasks = $this->getAdapter()->getTasks();
@@ -56,7 +57,7 @@ class CronTab
 
             foreach ($command_hits as $key => $command) {
                 $command_hits[$key] = base64_encode($command);
-                // $this->getLogger()->write("<{$command}> dispatch.");
+                $this->getLogger()->log("<{$command}> dispatched.");
             }
 
             if ($command_hits) $this->dispatch(join(' ', $command_hits));

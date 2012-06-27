@@ -79,26 +79,21 @@ class CronLib
                 }
                 unset($time_current, $time_points);
             }
-            else {
+            elseif (is_numeric($time_pre)) {
+                if (!self::checkRange($index, $time_pre)) {
+                    return false;
+                }
+                // if time on then pre is ok.
+                if ($time_pre == date($index_map[$index])) {
+                    $is_time_pre = true;
+                }
+            } else {
                 return false;
             }
 
             // not exist sub time.
             if (!$time_sub) {
                 $is_time_sub = true;
-                if (!$is_time_pre) {
-                    // check time range
-                    if (!self::checkRange($index, $time_pre)) {
-                        return false;
-                    }
-                    // if time on then pre is ok.
-                    if (is_numeric($time_pre) && $time_pre == date('s')) {
-                        $is_time_pre = true;
-                    } else {
-                        break;
-                    }
-                }
-
             } else {
                 if (!$is_time_pre) {
                     break;
@@ -246,7 +241,7 @@ class CronLib
             } while (!feof($pipes[1]) && $timeleft > 0);
             fclose($pipes[1]);
 
-            if($timeleft <= 0) {
+            if ($timeleft <= 0) {
                 proc_terminate($process);
                 $stderr = 'process terminated for timeout.';
                 return -1;
