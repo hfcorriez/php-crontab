@@ -37,7 +37,7 @@ class CronTab
      */
     public function start()
     {
-        $this->getLogger()->log("crontab start.");
+        $this->log("crontab start.");
         while (true) {
             // Load tasks every time.
             $this->tasks = $this->getAdapter()->getTasks();
@@ -61,7 +61,7 @@ class CronTab
 
             foreach ($command_hits as $key => $command) {
                 $command_hits[$key] = base64_encode($command);
-                $this->getLogger()->log("<{$command}> dispatched.");
+                $this->log("<{$command}> dispatched.");
             }
 
             if ($command_hits) $this->dispatch(join(' ', $command_hits));
@@ -105,9 +105,9 @@ class CronTab
         $process_time = number_format(microtime(true) - $start_time, 3);
         $process_memory = (memory_get_usage() - $start_memory) / 1000;
 
-        $this->getLogger()->log("<{$command}> ({$process_time}s | {$process_memory}k) [{$status}] " . ($stderr ? 'error!' : ''));
+        $this->log("<{$command}> ({$process_time}s | {$process_memory}k) [{$status}] " . ($stderr ? 'error!' : ''));
 
-        $this->getReporter()->report(array(
+        $this->report(array(
             'start_time'     => date('Y-m-d H:i:s', $start_time),
             'command'        => $command,
             'process_memory' => $process_memory,
@@ -119,16 +119,45 @@ class CronTab
     }
 
     /**
+     * Log
+     *
+     * @param $text
+     */
+    public function log($text)
+    {
+        if (!empty($this->config['crontab']['logger'])) {
+            $this->getLogger()->log($text);
+        }
+    }
+
+    /**
+     * Report
+     *
+     * @param array $report
+     */
+    public function report(array $report)
+    {
+        if (!empty($this->config['crontab']['reporter'])) {
+            $this->getReporter()->report($report);
+        }
+    }
+
+    /**
      * Get logger
      *
      * @return Logger
+     * @throws \Exception
      */
     public function getLogger()
     {
         static $instance = null;
 
         if ($instance === null) {
-            $instance = new Logger($this->config['log']);
+            if (!$conf = $this->config['crontab']['logger']) {
+                throw new \Exception("Unkown logger mode: {$this->config['crontab']['logger']}.");
+            }
+            $class = '\\' . __NAMESPACE__ . '\\Logger\\' . ucfirst($this->config[$conf]['mode']);
+            $instance = new $class($this->config[$conf]);
         }
 
         return $instance;

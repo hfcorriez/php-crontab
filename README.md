@@ -4,6 +4,7 @@
 - `0.2` 优化和改进，分离配置使可以单独配置文件路径，日志等
 - `0.3` 按照PSR重构，支持文件和数据库模式
 - `0.4` 支持结果上报，可以上报到数据库或者文件
+- `0.5` 支持目前了解的所有格式，优化配置格式，支持关闭logger和reporter
 
 # Features
 
@@ -37,36 +38,37 @@ ____
 bin/crontab.ini:
 
     [crontab]
-    crontab.adapter = file
-    crontab.reporter = file1
+    crontab.adapter = adapter
+    crontab.reporter = reporter
+    crontab.logger = logger
     crontab.timeout = 600
 
-    [file]
-    file.mode = file
-    file.path = tasks
+    [adapter]
+    adapter.mode = file
+    adapter.path = tasks
 
-    [file1]
-    file1.mode = file
-    file1.path = report.log
+    [reporter]
+    reporter.mode = file
+    reporter.path = report.log
 
-    [database]
-    database.mode = database
-    database.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF8"
-    database.username = username
-    database.password = password
-    database.table = php_crontab
-    database.field = command
+    [adapter1]
+    adapter1.mode = database
+    adapter1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF8"
+    adapter1.username = username
+    adapter1.password = password
+    adapter1.table = command
+    adapter1.field = command
 
-    [database1]
-    database1.mode = database
-    database1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF8"
-    database1.username = username
-    database1.password = password
-    database1.table = report
+    [reporter1]
+    reporter1.mode = database
+    reporter1.dsn = "mysql:host=localhost;port=3306;dbname=dbname;charset=UTF8"
+    reporter1.username = username
+    reporter1.password = password
+    reporter1.table = report
 
-    [log]
-    log.path = crontab.log
-    log.enable = 1
+    [logger]
+    logger.mode = file
+    logger.path = crontab.log
 
 
 运行例子
