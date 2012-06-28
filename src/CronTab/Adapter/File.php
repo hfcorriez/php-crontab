@@ -22,13 +22,11 @@ class File extends \CronTab\Adapter
         $tasks = file($this->config['path']);
 
         foreach ($tasks as $key => $task) {
+            unset($tasks[$key]);
             $task = trim($task);
 
-            if (!$parse = \CronTab\CronLib::parseLine($task)) {
-                continue;
-            }
+            if (!$parse = \CronTab\CronLib::parseLine($task)) continue;
 
-            unset($tasks[$key]);
             $tasks[$key] = array($parse[0], $parse[1]);
         }
         return $tasks;
