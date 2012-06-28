@@ -41,7 +41,7 @@ class CronLib
     {
         $time = time();
         $start_time = strtotime(date('Y-01-01 00:00:00'));
-        static $index_map = array('s', 'i', 'H', 'w', 'd', 'm');
+        static $index_map = array('s', 'i', 'H', 'd', 'm', 'w');
         // get command and cycles
         $cycles = explode(' ', trim($rule));
 
@@ -193,17 +193,17 @@ class CronLib
                 }
                 break;
             case 3:
-                if ($time >= 0 && $time <= 31) {
+                if ($time > 0 && $time <= 31) {
                     return true;
                 }
                 break;
             case 4:
-                if ($time >= 0 && $time <= 12) {
+                if ($time > 0 && $time <= 12) {
                     return true;
                 }
                 break;
             case 5:
-                if ($time >= 0 && $time < 7) {
+                if ($time > 0 && $time <= 7) {
                     return true;
                 }
                 break;
