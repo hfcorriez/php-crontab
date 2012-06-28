@@ -49,8 +49,11 @@ class CronTab
             $command_hits = array();
 
             foreach ($this->tasks as $task) {
+                // Parse task line
+                if (!$parse = \CronTab\CronLib::parseLine($task)) continue;
+
                 // Extract rule and comand
-                list($rule, $command) = $task;
+                list($rule, $command) = $parse;
 
                 // Check rule if ok?
                 if (CronLib::checkRule($rule)) $command_hits[] = $command;

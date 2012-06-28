@@ -22,14 +22,9 @@ class Database extends \CronTab\Adapter
         $field = $this->config['field'];
         $tasks = array();
         $results = $this->pdo->query("SELECT $field FROM {$this->config['table']}");
+
         foreach ($results as $result) {
-            $task = trim($result[$field]);
-
-            if (!$parse = \CronTab\CronLib::parseLine($task)) {
-                continue;
-            }
-
-            $tasks[] = array($parse[0], $parse[1]);
+            $tasks[] = trim($result[$field]);
         }
         return $tasks;
     }
