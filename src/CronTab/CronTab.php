@@ -49,10 +49,11 @@ class CronTab
             $command_hits = array();
 
             foreach ($this->tasks as $task) {
+                // Extract rule and comand
                 list($rule, $command) = $task;
-                if (CronLib::isValid($rule)) {
-                    $command_hits[] = $command;
-                }
+
+                // Check rule if ok?
+                if (CronLib::checkRule($rule)) $command_hits[] = $command;
             }
 
             foreach ($command_hits as $key => $command) {

@@ -13,164 +13,177 @@ class CronLib
     public static function parseLine($line)
     {
         $line = trim($line);
+
         // ignore blank line and comment line
-        if ($line == '' || $line{0} == '#') {
-            return false;
-        }
+        if ($line == '' || $line{0} == '#')  return false;
 
         // check format
-        if (!preg_match('/^((\*|\d+|\d+\-\d+|[\d,]+)(\/\d+)? ){6}(.*)$/', $line, $match)) {
-            return false;
-        }
+        if (!preg_match('/^(((\*|\d+|\d+\-\d+)(\/\d+)? |((\*|\d+|\d+\-\d+)(\/\d+)?,)+(\*|\d+|\d+\-\d+)(\/\d+)? ){6})(.*)$/', $line, $match))  return false;
 
-        $command = $match[4];
-        $rule = trim(substr($line, 0, -(strlen($command))));
-        return array($rule, $command);
+        return array($match[1], $match[10]);
     }
 
     /**
-     * Is valid command
+     * Check rule
      *
      * @static
      * @param      $rule
-     * @param      $start_time
-     * @param bool $time
      * @return bool
      */
-    public static function isValid($rule)
+    public static function checkRule($rule)
     {
-        $time = time();
-        $start_time = strtotime(date('Y-01-01 00:00:00'));
-        static $index_map = array('s', 'i', 'H', 'd', 'm', 'w');
-        // get command and cycles
-        $cycles = explode(' ', trim($rule));
+        // Get command and cycles
+        $chunks = explode(' ', trim($rule));
 
-        // init cycle hits to record task cycle.
-        $cycle_hits = array();
-        foreach ($cycles as $index => $cycle) {
-            // pre chunk
-            $is_time_pre = false;
-            // sub chunck
-            $is_time_sub = false;
+        // Process
+        foreach ($chunks as $index => $chunk) {
+            // Explode chunks
+            $slices = explode(',', $chunk);
+            $hit = false;
 
-            list($time_pre, $time_sub) = explode('/', $cycle);
-
-            // if pre is *, pre is ok.
-            if ($time_pre == '*') {
-                $is_time_pre = true;
-            } // if pre include "-" then star range mode.
-            elseif (strpos($time_pre, '-') !== false) {
-                list($left, $right) = explode('-', $time_pre);
-                // min, max must be under rules.
-                if (!self::checkRange($index, $left) || !self::checkRange($index, $right)) {
-                    return false;
-                }
-                $time_current = date($index_map[$index]);
-                // check range
-                if ($left < $right) {
-                    if ($time_current >= $left && $time_current <= $right) {
-                        $is_time_pre = true;
-                    }
-                } else {
-                    if ($time_current >= $left || $time_current <= $right) {
-                        $is_time_pre = true;
-                    }
-                }
-                unset($time_current, $left, $right);
-            }
-            elseif (strpos($time_pre, ',') !== false) {
-                $time_points = explode(',', $time_pre);
-                $time_current = date($index_map[$index]);
-                if (array_search($time_current, $time_points) !== false) {
-                    $is_time_pre = true;
-                }
-                unset($time_current, $time_points);
-            }
-            elseif (is_numeric($time_pre)) {
-                if (!self::checkRange($index, $time_pre)) {
-                    return false;
-                }
-                // if time on then pre is ok.
-                if ($time_pre == date($index_map[$index])) {
-                    $is_time_pre = true;
-                }
-            } else {
-                return false;
-            }
-
-            // not exist sub time.
-            if (!$time_sub) {
-                $is_time_sub = true;
-            } else {
-                if (!$is_time_pre) {
+            // Process check index
+            foreach ($slices as $slice) {
+                if (self::checkIndexSlice($index, $slice)) {
+                    $hit = true;
                     break;
                 }
-                // check sub range
-                if (!self::checkRange($index, $time_sub)) {
-                    return false;
-                }
-
-                $time_sub = (int)$time_sub;
-                // check every cycle
-                switch ($index) {
-                    case 0:
-                        // second check.
-                        if (($time - $start_time) % $time_sub == 0) {
-                            $is_time_sub = true;
-                        }
-                        break;
-                    case 1:
-                        // minutes check
-                        if (floor(($time - $start_time) / 60) % $time_sub == 0) {
-                            $is_time_sub = true;
-                        }
-                        break;
-                    case 2:
-                        // hour check
-                        if (floor(($time - $start_time) / 3600) % $time_sub == 0) {
-                            $is_time_sub = true;
-                        }
-                        break;
-                    case 3:
-                        // day check
-                        if (floor(($time - $start_time) / 86400) % $time_sub == 0) {
-                            $is_time_sub = true;
-                        }
-                        break;
-                    case 4:
-                        // month check
-                        $date1 = explode('-', date('Y-m', $start_time));
-                        $date2 = explode('-', date('Y-m', $time));
-                        $month = abs($date1[0] - $date2[0]) * 12 + abs($date1[1] - $date2[1]);
-                        if ($month & $time_sub == 0) {
-                            $is_time_sub = true;
-                        }
-                        unset($date1, $date2, $month);
-                        break;
-                    case 5:
-                        // week check
-                        if (floor(($time - $start_time) / 86400 / 7) % $time_sub == 0) {
-                            $is_time_sub = true;
-                        }
-                        break;
-                }
             }
 
-            // pre and sub is ok, then hit one
-            if ($is_time_pre && $is_time_sub) {
-                $cycle_hits[$index] = 1;
-            } else {
-                break;
-            }
-
-            unset($time_pre, $time_sub, $is_time_pre, $is_time_sub);
+            // If one index not hit, return false
+            if (!$hit) return false;
         }
 
-        // run command in pip mode when every cycle is hit.
-        if (array_sum($cycle_hits) == 6) {
-            return true;
+        return true;
+    }
+
+    /**
+     * Check chunk of index split
+     *
+     * @static
+     * @param $index
+     * @param $slice
+     * @return bool
+     */
+    public static function checkIndexSlice($index, $slice)
+    {
+        // Current time
+        $cur_time = self::getCurTime();
+        // Current index time
+        $index_time = self::getCurIndexTime($index);
+        // Start time
+        $start_time = self::getStartTime();
+
+        // pre chunk
+        $is_valid = false;
+
+        // Extract pre and sub
+        list($pre, $sub) = explode('/', $slice);
+
+        // if pre is *, pre is ok.
+        if ($pre == '*') {
+            $is_valid = true;
+        } // if pre include "-" then star range mode.
+        elseif (strpos($pre, '-') !== false) {
+            list($left, $right) = explode('-', $pre);
+
+            // left, right must be under rules.
+            if (!self::checkIndexRange($index, $left) || !self::checkIndexRange($index, $right)) return false;
+
+            // Check range
+            if ($left < $right) {
+                if ($index_time >= $left && $index_time <= $right) $is_valid = true;
+            } else {
+                if ($index_time >= $left || $index_time <= $right) $is_valid = true;
+            }
+        }
+        elseif (is_numeric($pre)) {
+            // Check range
+            if (!self::checkIndexRange($index, $pre)) return false;
+
+            // If time on then pre is ok.
+            if ($pre == $index_time) $is_valid = true;
+        } else {
+            return false;
+        }
+
+        // If pre is invalid or not sub.
+        if (!$is_valid || !$sub) return $is_valid;
+
+        // Check sub range
+        if (!self::checkIndexRange($index, $sub)) return false;
+
+        // To number
+        $sub = (int)$sub;
+
+        // Check every cycle
+        switch ($index) {
+            case 0:
+                // Second check.
+                if (($cur_time - $start_time) % $sub == 0) return true;
+                break;
+            case 1:
+                // Minutes check
+                if (floor(($cur_time - $start_time) / 60) % $sub == 0) return true;
+                break;
+            case 2:
+                // Hour check
+                if (floor(($cur_time - $start_time) / 3600) % $sub == 0) return true;
+                break;
+            case 3:
+                // Day check
+                if (floor(($cur_time - $start_time) / 86400) % $sub == 0) return true;
+                break;
+            case 4:
+                // Month check
+                $date1 = explode('-', date('Y-m', $start_time));
+                $date2 = explode('-', date('Y-m', $cur_time));
+                $month = abs($date1[0] - $date2[0]) * 12 + abs($date1[1] - $date2[1]);
+                if ($month & $sub == 0) return true;
+                break;
+            case 5:
+                // Week check
+                if (floor(($cur_time - $start_time) / 86400 / 7) % $sub == 0) return true;
+                break;
         }
         return false;
+    }
+
+    /**
+     * Get start time
+     *
+     * @static
+     * @return int
+     */
+    public static function getStartTime()
+    {
+        static $start_time = null;
+        if ($start_time === null) $start_time = strtotime(date('Y-01-01 00:00:00'));
+        return $start_time;
+    }
+
+    /**
+     * Get current index time
+     *
+     * @static
+     * @param      $index
+     * @param null $time
+     * @return string
+     */
+    public static function getCurIndexTime($index, $time = null)
+    {
+        static $index_map = array('s', 'i', 'H', 'd', 'm', 'w');
+        return date($index_map[$index], $time ? $time : time());
+    }
+
+    /**
+     * Get current time
+     *
+     * @static
+     * @return int
+     */
+    public static function getCurTime()
+    {
+        return time();
     }
 
     /**
@@ -180,7 +193,7 @@ class CronLib
      * @param $time
      * @return bool
      */
-    public static function checkRange($index, $time)
+    public static function checkIndexRange($index, $time)
     {
         switch ($index) {
             case 0:
