@@ -60,17 +60,23 @@ class CronLib
                 $is_time_pre = true;
             } // if pre include "-" then star range mode.
             elseif (strpos($time_pre, '-') !== false) {
-                list($min, $max) = explode('-', $time_pre);
+                list($left, $right) = explode('-', $time_pre);
                 // min, max must be under rules.
-                if (!self::checkRange($index, $min) || !self::checkRange($index, $max) || $max <= $min) {
+                if (!self::checkRange($index, $left) || !self::checkRange($index, $right)) {
                     return false;
                 }
                 $time_current = date($index_map[$index]);
                 // check range
-                if ($time_current >= $min && $time_current <= $max) {
-                    $is_time_pre = true;
+                if ($left < $right) {
+                    if ($time_current >= $left && $time_current <= $right) {
+                        $is_time_pre = true;
+                    }
+                } else {
+                    if ($time_current >= $left || $time_current <= $right) {
+                        $is_time_pre = true;
+                    }
                 }
-                unset($time_current, $min, $max);
+                unset($time_current, $left, $right);
             }
             elseif (strpos($time_pre, ',') !== false) {
                 $time_points = explode(',', $time_pre);
