@@ -40,7 +40,7 @@ class CronLib
     public static function isValid($rule)
     {
         $time = time();
-        $start_time = strtotime('today');
+        $start_time = strtotime(date('Y-01-01 00:00:00'));
         static $index_map = array('s', 'i', 'H', 'w', 'd', 'm');
         // get command and cycles
         $cycles = explode(' ', trim($rule));

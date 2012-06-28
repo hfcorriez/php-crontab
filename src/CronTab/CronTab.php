@@ -65,9 +65,7 @@ class CronTab
             // check sleep time and do sleep
             $current_time = microtime(true);
             $sleep_time = 1000000 - floor((microtime(true) - floor($current_time)) * 1000000);
-            if ($sleep_time > 0) {
-                usleep($sleep_time);
-            }
+            if ($sleep_time > 0) usleep($sleep_time);
 
             unset($sleep_time, $micro_time, $tasks, $command_hits, $current_time);
         }
