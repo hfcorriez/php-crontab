@@ -15,10 +15,10 @@ class CronLib
         $line = trim($line);
 
         // ignore blank line and comment line
-        if ($line == '' || $line{0} == '#')  return false;
+        if ($line == '' || $line{0} == '#') return false;
 
         // check format
-        if (!preg_match('/^(((\*|\d+|\d+\-\d+)(\/\d+)? |((\*|\d+|\d+\-\d+)(\/\d+)?,)+(\*|\d+|\d+\-\d+)(\/\d+)? ){6})(.*)$/', $line, $match))  return false;
+        if (!preg_match('/^(((\*|\d+|\d+\-\d+)(\/\d+)? |((\*|\d+|\d+\-\d+)(\/\d+)?,)+(\*|\d+|\d+\-\d+)(\/\d+)? ){6})(.*)$/', $line, $match)) return false;
 
         return array($match[1], $match[10]);
     }
@@ -76,8 +76,10 @@ class CronLib
         // pre chunk
         $is_valid = false;
 
+        $pre = $sub = '';
         // Extract pre and sub
-        list($pre, $sub) = explode('/', $slice);
+        if (strpos($slice, '/')) list($pre, $sub) = explode('/', $slice);
+        else $pre = $slice;
 
         // if pre is *, pre is ok.
         if ($pre == '*') {
