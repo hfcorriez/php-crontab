@@ -1,10 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-error_reporting(E_ALL & ~E_NOTICE);
 if (PHP_SAPI !== 'cli') exit('CronTab only run under cli mode.');
 
 if (!defined('CRON_DIR')) define('CRON_DIR', dirname(__FILE__));
+if (!defined('CRON_INI')) define('CRON_INI', CRON_DIR . '/crontab.ini');
 
 // Change current work dir
 chdir(CRON_DIR);
@@ -23,10 +23,10 @@ unset($argv[0]);
 $commands = array_values($argv);
 
 // Init cron
-require dirname(CRON_DIR) . '/src/AutoLoader.php';
+require dirname(dirname(__FILE__)) . '/src/AutoLoader.php';
 AutoLoader::register();
-$ini = \CronTab\IniParser::loadFromFile(CRON_DIR . '/crontab.ini');
-$cron = new \CronTab\CronTab($ini->get(), CRON_DIR);
+$ini = \CronTab\IniParser::loadFromFile(CRON_INI)->get();
+$cron = new \CronTab\CronTab($ini);
 $cron->registerExecutor($executor);
 
 // Work mode
