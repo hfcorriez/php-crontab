@@ -4,7 +4,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 if (PHP_SAPI !== 'cli') exit('CronTab only run under cli mode.');
 
-define('CRON_DIR', dirname(__FILE__));
+if (!defined('CRON_DIR')) define('CRON_DIR', dirname(__FILE__));
 
 // Change current work dir
 chdir(CRON_DIR);
