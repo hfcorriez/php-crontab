@@ -17,6 +17,8 @@ class File extends \CronTab\Logger
         $datetime = date('Y-m-d H:i:s.' . substr(sprintf('%.3f', $micro_time), -3), $micro_time);
 
         $msg = "[$datetime] $text\n";
-        file_put_contents($this->config['path'], $msg, FILE_APPEND);
+        $dir = dirname($this->config['path']);
+        if (!is_dir($dir) || !mkdir($dir, 0777, true)) return false;
+        return file_put_contents($this->config['path'], $msg, FILE_APPEND);
     }
 }
