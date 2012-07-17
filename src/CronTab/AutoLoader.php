@@ -1,5 +1,7 @@
 <?php
 
+namespace CronTab;
+
 class AutoLoader
 {
     public static function load($className)

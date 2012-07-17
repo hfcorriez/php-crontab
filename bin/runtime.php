@@ -20,8 +20,6 @@ $argv0 = array_shift($argv);
 $commands = array_values($argv);
 
 // Init cron
-require dirname(dirname(__FILE__)) . '/src/AutoLoader.php';
-AutoLoader::register();
 $ini = \CronTab\IniParser::loadFromFile(CRON_INI)->get();
 $cron = new \CronTab\CronTab($ini);
 $cron->registerExecutor(CRON_EXECUTOR);

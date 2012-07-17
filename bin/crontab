@@ -1,4 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+// load CronTab
+require dirname(dirname(__FILE__)) . '/src/CronTab/AutoLoader.php';
+\CronTab\AutoLoader::register();
+
 require dirname(__FILE__) . '/runtime.php';
