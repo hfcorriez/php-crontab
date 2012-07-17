@@ -1,6 +1,7 @@
 <?php
 
 if (PHP_SAPI !== 'cli') exit('CronTab only run under cli mode.');
+if (!class_exists('\CronTab\CronTab')) exit('CronTab must be load before use.');
 
 if (!defined('CRON_DIR')) define('CRON_DIR', dirname(__FILE__));
 if (!defined('CRON_INI')) define('CRON_INI', CRON_DIR . '/crontab.ini');
