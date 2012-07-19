@@ -2,7 +2,6 @@
 <?php
 
 // load CronTab
-require dirname(dirname(__FILE__)) . '/src/CronTab/AutoLoader.php';
-\CronTab\AutoLoader::register();
+$loader = include(__DIR__ . '/../src/bootstrap.php');
 
 require dirname(__FILE__) . '/runtime.php';

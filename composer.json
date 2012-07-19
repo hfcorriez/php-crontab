@@ -1,0 +1,13 @@
+{
+    "name": "hfcorriez/crontab",
+    "description": "CronTab implements for PHP",
+    "authors": [
+        {
+            "name": "Corrie Zhao",
+            "email": "hfcorriez@gmail.com"
+        }
+    ],
+    "require": {
+
+    }
+}
