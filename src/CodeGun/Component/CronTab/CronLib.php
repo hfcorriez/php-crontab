@@ -1,6 +1,6 @@
 <?php
 
-namespace CronTab;
+namespace CodeGun\Component\CronTab;
 
 class CronLib
 {

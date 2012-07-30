@@ -1,6 +1,6 @@
 <?php
 
-namespace CronTab;
+namespace CodeGun\Component\CronTab;
 
 class CronTab
 {
@@ -50,7 +50,7 @@ class CronTab
 
             foreach ($this->tasks as $task) {
                 // Parse task line
-                if (!$parse = \CronTab\CronLib::parseLine($task)) continue;
+                if (!$parse = CronLib::parseLine($task)) continue;
 
                 // Extract rule and comand
                 list($rule, $command) = $parse;
@@ -64,7 +64,7 @@ class CronTab
                 $this->log("<{$command}> dispatched.");
             }
 
-            if ($command_hits) $this->dispatch(join(' ', $command_hits));
+            if ($command_hits) $this->dispatch(join(',', $command_hits));
 
             // check sleep time and do sleep
             $current_time = microtime(true);
@@ -82,13 +82,13 @@ class CronTab
      */
     public function dispatch($command)
     {
-        CronLib::pipeShell($this->executor . ' ' . $command);
+        CronLib::pipeShell($this->executor . $command);
     }
 
     /**
      * Execute command
      *
-     * @param array $commands
+     * @param $command
      * @return mixed
      */
     public function execute($command)

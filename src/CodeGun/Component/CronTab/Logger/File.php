@@ -1,8 +1,8 @@
 <?php
 
-namespace CronTab\Logger;
+namespace CodeGun\Component\CronTab\Logger;
 
-class File extends \CronTab\Logger
+class File extends \CodeGun\Component\CronTab\Logger
 {
     protected $config = array();
 
@@ -18,7 +18,7 @@ class File extends \CronTab\Logger
 
         $msg = "[$datetime] $text\n";
         $dir = dirname($this->config['path']);
-        if (!is_dir($dir) || !mkdir($dir, 0777, true)) return false;
+        if (!is_dir($dir) && !mkdir($dir, 0777, true)) return false;
         return file_put_contents($this->config['path'], $msg, FILE_APPEND);
     }
 }
