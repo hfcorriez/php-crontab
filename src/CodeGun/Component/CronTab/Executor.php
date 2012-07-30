@@ -19,6 +19,7 @@ class Executor
         if (substr($_SERVER['_'], -strlen($this->_)) != $this->_) {
             $this->php = $_SERVER['_'];
         }
+        $this->_ = realpath($this->_);
 
         foreach ($args as $arg) {
             $pos = strpos($arg, '=');
@@ -33,6 +34,7 @@ class Executor
             if (strpos($v, ',') !== false) $this->args[$k] = explode(',', $v);
         }
 
+        if (!empty($this->config['work_dir'])) chdir($this->config['work_dir']);
         if ($this->checkIfProcessMax()) exit('Over max process.');
         if (!$this->checkArgs()) exit($this->usage());
     }
@@ -41,7 +43,7 @@ class Executor
     {
         try {
             $cron = new CronTab($this->config['data']);
-            $cron->registerExecutor(!empty($this->config['executor']) ? $this->config['executor'] : trim($this->php . ' ' . $this->_ . ' --job='));
+            $cron->registerExecutor(trim($this->php . ' ' . (!empty($this->config['executor']) ? $this->config['executor'] : $this->_) . ' --job='));
 
             if (isset($this->args['--master'])) {
                 $cron->start();
