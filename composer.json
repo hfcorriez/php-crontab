@@ -18,5 +18,8 @@
         "psr-0": {
             "CodeGun\\Component\\CronTab": "src"
         }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
