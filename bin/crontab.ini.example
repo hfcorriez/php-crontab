@@ -10,7 +10,7 @@ adapter.path = tasks
 
 [reporter]
 reporter.mode = file
-reporter.path = report.log
+reporter.path = /tmp/report.log
 
 [adapter1]
 adapter1.mode = database
@@ -29,4 +29,4 @@ reporter1.table = report
 
 [logger]
 logger.mode = file
-logger.path = crontab.log
+logger.path = /tmp/crontab.log

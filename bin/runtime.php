@@ -9,7 +9,7 @@ use CodeGun\Component\CronTab\Executor;
 use CodeGun\Util\Ini\Parser;
 
 // Change current work dir.
-chdir(CRON_DIR);
+// chdir(CRON_DIR);
 
 // Get config.
 $config = Parser::loadFromFile(CRON_INI)->get();
