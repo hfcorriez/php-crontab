@@ -1,5 +1,8 @@
 .idea
 *.log
 
+bin/tasks
+bin/crontab.ini
+
 vendor
 *.lock
