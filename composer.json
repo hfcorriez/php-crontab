@@ -1,7 +1,7 @@
 {
     "name": "codegun/crontab",
     "type": "library",
-    "description": "CronTab implements for PHP",
+    "description": "Implements CronTab (*unix like) for PHP",
     "keywords": ["crontab", "cron", "cron job"],
     "license": "MIT",
     "authors": [
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "CodeGun\\Component\\CronTab": "src"
+            "CodeGun\\CronTab": "src"
         }
     },
     "config": {

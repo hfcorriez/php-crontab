@@ -1,11 +1,11 @@
 <?php
 
-namespace CodeGun\Component\CronTab\Adapter;
+namespace CodeGun\CronTab\Adapter;
 
 /**
  * File Adapter
  */
-class File extends \CodeGun\Component\CronTab\Adapter
+class File extends \CodeGun\CronTab\Adapter
 {
     protected $config;
 

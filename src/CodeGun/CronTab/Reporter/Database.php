@@ -1,11 +1,11 @@
 <?php
 
-namespace CodeGun\Component\CronTab\Reporter;
+namespace CodeGun\CronTab\Reporter;
 
 /**
  * Database Reporter
  */
-class Database extends \CodeGun\Component\CronTab\Reporter
+class Database extends \CodeGun\CronTab\Reporter
 {
     protected $config;
 

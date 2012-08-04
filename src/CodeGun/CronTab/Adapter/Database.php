@@ -1,11 +1,11 @@
 <?php
 
-namespace CodeGun\Component\CronTab\Adapter;
+namespace CodeGun\CronTab\Adapter;
 
 /**
  * DataBase Adapter
  */
-class Database extends \CodeGun\Component\CronTab\Adapter
+class Database extends \CodeGun\CronTab\Adapter
 {
     protected $config;
 

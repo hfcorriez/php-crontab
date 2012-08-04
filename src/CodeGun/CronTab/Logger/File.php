@@ -1,8 +1,8 @@
 <?php
 
-namespace CodeGun\Component\CronTab\Logger;
+namespace CodeGun\CronTab\Logger;
 
-class File extends \CodeGun\Component\CronTab\Logger
+class File extends \CodeGun\CronTab\Logger
 {
     protected $config = array();
 
