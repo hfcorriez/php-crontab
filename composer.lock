@@ -1,9 +1,9 @@
 {
-    "hash": "65135b1afb49d7b94d77a468c9cbb695",
+    "hash": "af4428e4e3f33688e46142e47f18046c",
     "packages": [
         {
             "package": "codegun/ini",
-            "version": "0.1.0"
+            "version": "0.1.1"
         }
     ],
     "packages-dev": null,
