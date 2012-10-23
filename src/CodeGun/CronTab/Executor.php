@@ -8,13 +8,14 @@ class Executor
     protected $php = null;
     protected $args = array();
     protected $config = array();
+    protected $program;
 
     public function __construct(array $config)
     {
         if (PHP_SAPI !== 'cli') throw new \Exception('Please use this under cli mode.');
 
         $this->config = $config;
-        $this->_ = $GLOBALS['argv'][0];
+        $this->_ = $this->program = $GLOBALS['argv'][0];
         $args = array_slice($GLOBALS['argv'], 1);
         if (substr($_SERVER['_'], -strlen($this->_)) != $this->_) {
             $this->php = $_SERVER['_'];
@@ -84,7 +85,7 @@ class Executor
         foreach ($this->config['args'] as $arg) {
             $greps[] = "grep -e \"$arg\"";
         }
-        return (int)shell_exec('ps -ef | grep ' . $this->_ . ' | ' . ($greps ? join(' | ', $greps) . ' |' : '') . ' grep -v grep | grep -v "sh -c" | wc -l');
+        return (int)shell_exec('ps -ef | grep "' . $this->program . '" | ' . ($greps ? join(' | ', $greps) . ' |' : '') . ' grep -v grep | grep -v "sh -c" | wc -l');
     }
 
     public function usage()
@@ -93,6 +94,6 @@ class Executor
         foreach ($this->config['args'] as $arg) {
             $args[] = "{$arg}[=value]";
         }
-        return "[Usage] \n\n" . $this->_ . ' ' . join(' ', $args) . "\n\n";
+        return "[Usage] \n\n" . $this->program . ' ' . join(' ', $args) . "\n\n";
     }
 }
