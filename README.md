@@ -1,6 +1,6 @@
 当前项目已经有一个更好的实现：
 
-[Croon](https://github.com/hfcorriez/croon)
+[Croon - https://github.com/hfcorriez/croon](https://github.com/hfcorriez/croon)
 
 `该项目将会停止更新！请使用实现更完善的croon`
 
